@@ -1,3 +1,9 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">react-native-ksyvideo</string>
+    <string name="error_no_decoder">This device does not provide a decoder for %1$s</string>
+    <string name="error_no_secure_decoder">This device does not provide a secure decoder for %1$s</string>
+    <string name="error_querying_decoders">Unable to query device decoders</string>
+    <string name="error_instantiating_decoder">Unable to instantiate decoder %1$s</string>
+    <string name="error_unable_to_connect">Unable to connect to %s</string>
+
 </resources>

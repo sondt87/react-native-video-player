@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.widget.MediaController;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.react.bridge.Arguments;
@@ -23,48 +22,24 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.github.sondt87.Events;
+import com.github.sondt87.AbsVideoView;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
-import com.ksyun.media.player.KSYMediaRecorder;
 import com.ksyun.media.player.KSYTextureView;
-import com.ksyun.media.player.recorder.KSYMediaRecorderConfig;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by dengchu on 2017/10/26.
  */
 
-public class ReactKSYVideoView extends RelativeLayout implements LifecycleEventListener, MediaController.MediaPlayerControl{
+public class ReactKSYVideoView extends AbsVideoView implements LifecycleEventListener, MediaController.MediaPlayerControl {
 
-    public enum Events {
-        EVENT_TOUCH("onVideoTouch"),
-        EVENT_LOAD_START("onVideoLoadStart"),
-        EVENT_LOAD("onVideoLoad"),
-        EVENT_ERROR("onVideoError"),
-        EVENT_PROGRESS("onVideoProgress"),
-        EVENT_SEEK("onVideoSeek"),
-        EVENT_END("onVideoEnd"),
-        EVENT_STALLED("onPlaybackStalled"),
-        EVENT_RESUME("onPlaybackResume"),
-        EVENT_READY_FOR_DISPLAY("onReadyForDisplay");
 
-        private final String mName;
-
-        Events(final String name) {
-            mName = name;
-        }
-
-        @Override
-        public String toString() {
-            return mName;
-        }
-    }
 
     public static final String EVENT_PROP_FAST_FORWARD = "canPlayFastForward";
     public static final String EVENT_PROP_SLOW_FORWARD = "canPlaySlowForward";

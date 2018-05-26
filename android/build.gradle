@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 16
@@ -13,10 +13,23 @@ android {
 }
 
 dependencies {
-    compile "com.facebook.react:react-native:+"  // From node_modules
+    compile  "com.facebook.react:react-native:+"  // From node_modules
 
-    compile 'com.ksyun.media:libksyplayer-arm64:2.1.0'
-    compile 'com.ksyun.media:libksyplayer-x86:2.1.0'
-    compile 'com.ksyun.media:libksyplayer-armv7a:2.1.0'
-    compile 'com.ksyun.media:libksyplayer-java:2.1.0'
+    compile  'com.ksyun.media:libksyplayer-arm64:2.1.0'
+    compile  'com.ksyun.media:libksyplayer-x86:2.1.0'
+    compile  'com.ksyun.media:libksyplayer-armv7a:2.1.0'
+    compile  'com.ksyun.media:libksyplayer-java:2.1.0'
+
+    compile  'com.google.android.exoplayer:exoplayer-core:2.7.3'
+    compile  'com.google.android.exoplayer:exoplayer-dash:2.7.3'
+    compile  'com.google.android.exoplayer:exoplayer-ui:2.7.3'
+    compile  'com.google.android.exoplayer:exoplayer-smoothstreaming:2.7.3'
+    compile  'com.google.android.exoplayer:exoplayer-hls:2.7.3'
+    compile  'com.google.android.exoplayer:extension-rtmp:2.7.3'
+
+//    compile 'com.google.android.exoplayer:exoplayer:2.7.3'
+//    compile 'com.google.android.exoplayer:exoplayer-hls:r2.7.3'
+//    compile 'com.google.android.exoplayer:exoplayer-ui:r2.7.3'
+//    compile 'com.google.android.exoplayer:exoplayer-dash:2.7.3'
+//    compile 'com.google.android.exoplayer:extension-rtmp:2.7.3'
 }
