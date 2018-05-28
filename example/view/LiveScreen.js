@@ -30,7 +30,7 @@ export default class LiveScreen extends Component {
         // this.video.setRotateDegree(this.state.degree);
         this.setState({degree: (this.state.degree+90)%360});
     }
-    
+
     onAudioProgressChanged(newPercent) {
         if (newPercent >= 0){
           this.setState({volume: newPercent/100});
@@ -43,7 +43,7 @@ export default class LiveScreen extends Component {
     console.log("JS params.user"+params.user);
         return (
       <View style={styles.container}>
-       
+
           <StatusBar
               hidden={!this.state.showbar}
             />
@@ -66,7 +66,7 @@ export default class LiveScreen extends Component {
               onEnd={(data)=>{this.props.navigation.goBack();console.log("JS onCompletion");}}
               onError={(data)=>{this.props.navigation.goBack();console.log("JS onError:" + data.error.what + data.error.extra);}}
               style={styles.fullScreen}
-            />        
+            />
 
           {this.state.showbar?(
             <View style={{justifyContent:'flex-end', width:40, marginBottom:10}}>
@@ -79,14 +79,6 @@ export default class LiveScreen extends Component {
 
           {this.state.showbar?(
             <View style={{marginRight:10, justifyContent: 'center'}}>
-              <TouchableOpacity style={{marginTop:20}} onPress={()=>{this.video.saveBitmap();}}>
-                 <Image style={{width:40,height:40}} source={require("../res/images/screen_shot.png")}/>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={{marginTop:40}} onPress={()=>{this.setState({mirror: !this.state.mirror});}}>
-                <Image style={{width:40,height:40}} source={require("../res/images/mirror.png")}/>
-              </TouchableOpacity>
-
               <TouchableOpacity style={{marginTop:40}} onPress={this.onPressRotate.bind(this)}>
                 <Image style={{width:40,height:40}} source={require("../res/images/rotation.png")}/>
               </TouchableOpacity>

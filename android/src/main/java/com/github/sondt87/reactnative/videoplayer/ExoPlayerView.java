@@ -3,6 +3,7 @@ package com.github.sondt87.reactnative.videoplayer;
 import android.media.PlaybackParams;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.Surface;
 import android.view.ViewGroup;
@@ -21,7 +22,6 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
@@ -29,13 +29,11 @@ import com.google.android.exoplayer2.util.EventLogger;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import com.ksyun.media.reactnative.R;
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -51,7 +49,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -117,6 +114,7 @@ public class ExoPlayerView extends AbsVideoView implements ExoPlayer.EventListen
         mEventEmitter = context.getJSModule(RCTEventEmitter.class);
         mSimpleExoPlayerView = new PlayerView(context);
         mSimpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+        mSimpleExoPlayerView.setUseController(false);
         addView(mSimpleExoPlayerView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER));
@@ -313,13 +311,34 @@ public class ExoPlayerView extends AbsVideoView implements ExoPlayer.EventListen
             case C.TYPE_HLS:
                 return new HlsMediaSource(uri, mMediaDataSourceFactory, mHandler, mEventLogger);
             case C.TYPE_OTHER:
-                return buildRtmpDataSource(uri);
+                return buildOtherTypeDataSource(uri);
+
 //                return new ExtractorMediaSource(uri,mMediaDataSourceFactory,new DefaultExtractorsFactory(),mHandler,
 //                        mEventLogger);
             default: {
                 throw new IllegalStateException("Unsupported type: " + type);
             }
         }
+    }
+
+    private MediaSource buildOtherTypeDataSource(Uri uri) {
+        String scheme = uri.getScheme();
+        String fileName = Util.toLowerInvariant(uri.getLastPathSegment());
+
+        if(scheme == null)
+            throw new IllegalStateException("Unsupported relative URI: " + uri.toString());
+
+        if(scheme.startsWith("rtmp")) return buildRtmpDataSource(uri);
+        else
+           return buildOtherDataSource(uri);
+    }
+
+    @NonNull
+    private MediaSource buildOtherDataSource(Uri uri) {
+        DataSource.Factory factory = new DefaultDataSourceFactory(mContext,
+                    Util.getUserAgent(mContext, mContext.getPackageName()));
+        MediaSource mediaSource = new ExtractorMediaSource.Factory(factory).createMediaSource(uri);
+        return mediaSource;
     }
 
     private MediaSource buildRtmpDataSource(Uri uri) {

@@ -18,7 +18,7 @@ class HomeScreen extends Component {
 //rtmp://live.hkstv.hk.lxdns.com/live/hks  http://192.168.77.35:8000/iphone7.mp4 /storage/emulated/0/Download/iphone7.mp4 /storage/emulated/0/Download/bbb_720p_qy265.flv
   constructor(props) {
       super(props);
-      this.state = { text: 'rtmp://live.hkstv.hk.lxdns.com/live/hks' };
+      this.state = { text: 'http://rtmp67.ivynative.com/vod/18d28346-53fb-43f0-9f87-37f17b16986d.mp4' };
     }
 
   render() {
