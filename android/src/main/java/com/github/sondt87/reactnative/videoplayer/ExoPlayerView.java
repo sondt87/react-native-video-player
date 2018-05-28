@@ -4,6 +4,7 @@ import android.media.PlaybackParams;
 import android.net.Uri;
 import android.os.Handler;
 import android.view.Gravity;
+import android.view.Surface;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
@@ -15,13 +16,17 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.github.sondt87.AbsVideoView;
 import com.github.sondt87.Events;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.util.EventLogger;
+import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import com.ksyun.media.reactnative.R;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -54,7 +59,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 
-public class ExoPlayerView extends AbsVideoView implements ExoPlayer.EventListener, LifecycleEventListener, MediaController.MediaPlayerControl {
+public class ExoPlayerView extends AbsVideoView implements ExoPlayer.EventListener, LifecycleEventListener, MediaController.MediaPlayerControl, VideoRendererEventListener {
     private static final String EVENT_PROP_DURATION = "duration";
 
     private static final String EVENT_PROP_CURRENT_TIME = "currentTime";
@@ -111,8 +116,9 @@ public class ExoPlayerView extends AbsVideoView implements ExoPlayer.EventListen
         context.addLifecycleEventListener(this);
         mEventEmitter = context.getJSModule(RCTEventEmitter.class);
         mSimpleExoPlayerView = new PlayerView(context);
+        mSimpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
         addView(mSimpleExoPlayerView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER));
         mUserAgent = Util.getUserAgent(mContext, mContext.getPackageName());
         mMediaDataSourceFactory = buildDataSourceFactory();
@@ -235,6 +241,7 @@ public class ExoPlayerView extends AbsVideoView implements ExoPlayer.EventListen
         mPlayer.addListener(this);
         mPlayer.addListener(mEventLogger);
         mSimpleExoPlayerView.setPlayer(mPlayer);
+        mPlayer.addVideoDebugListener(this);
     }
 
     private void preparePlayer() {
@@ -588,4 +595,63 @@ public class ExoPlayerView extends AbsVideoView implements ExoPlayer.EventListen
     public void saveBitmap() {
 
     }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+
+        // The spinner relies on a measure + layout pass happening after it calls requestLayout().
+        // Without this, the widget never actually changes the selection and doesn't call the
+        // appropriate listeners. Since we override onLayout in our ViewGroups, a layout pass never
+        // happens after a call to requestLayout, so we simulate one here.
+        post(measureAndLayout);
+    }
+
+    private final Runnable measureAndLayout = new Runnable() {
+        @Override
+        public void run() {
+            measure(
+                    MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+            layout(getLeft(), getTop(), getRight(), getBottom());
+        }
+    };
+
+    //START VideoRendererEventListener
+    @Override
+    public void onVideoEnabled(DecoderCounters counters) {
+
+    }
+
+    @Override
+    public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
+
+    }
+
+    @Override
+    public void onVideoInputFormatChanged(Format format) {
+
+    }
+
+    @Override
+    public void onDroppedFrames(int count, long elapsedMs) {
+
+    }
+
+    @Override
+    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+        System.out.println("--------> onVideoSizeChanged: " + width +"/" + height +"/" + unappliedRotationDegrees +"/" + pixelWidthHeightRatio);
+    }
+
+    @Override
+    public void onRenderedFirstFrame(Surface surface) {
+
+    }
+
+    @Override
+    public void onVideoDisabled(DecoderCounters counters) {
+
+    }
+
+    //END VideoRendererEventListener
 }

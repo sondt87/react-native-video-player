@@ -2,12 +2,13 @@ package com.github.sondt87;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.facebook.react.bridge.ReadableMap;
 
 
-public abstract class AbsVideoView extends RelativeLayout {
+public abstract class AbsVideoView extends FrameLayout {
 
     public AbsVideoView(Context context) {
         super(context);
