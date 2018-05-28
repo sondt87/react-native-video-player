@@ -51,7 +51,7 @@ export default class KSYVideo extends Component {
         }
         this.props.onLoad(event.nativeEvent);
     }
-    
+
     _onEnd = (event)=>{
         if (!this.props.onEnd){
             return;
@@ -108,7 +108,7 @@ export default class KSYVideo extends Component {
     render(){
         const nativeProps = Object.assign({}, this.props);
         Object.assign(nativeProps, {
-           
+
             onVideoTouch:this._onTouch,
             onVideoLoadStart: this._onLoadStart,
             onVideoLoad:this._onLoad,
@@ -121,8 +121,8 @@ export default class KSYVideo extends Component {
             onPlaybackResume: this._onPlaybackResume,
         });
 
-        return (  
-                <RCTKSYVideo           
+        return (
+                <RCTKSYVideo
                     {...nativeProps}
                     ref = {RCT_VIDEO_REF}
                 />
@@ -179,7 +179,7 @@ KSYVideo.propTypes = {
     ...KSYViewPropType,
 };
 
-const RCTKSYVideo = requireNativeComponent('RCTKSYVideo',KSYVideo,{
+const RCTKSYVideo = requireNativeComponent('RCTEXOVideo',KSYVideo,{
    nativeOnly: {
     src: true,
     seek: true,

@@ -56,7 +56,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 
-public class ExoPlayerView extends AbsVideoView implements ExoPlayer.EventListener, LifecycleEventListener, MediaController.MediaPlayerControl, VideoRendererEventListener {
+public class ReactExoPlayerView extends AbsVideoView implements ExoPlayer.EventListener, LifecycleEventListener, MediaController.MediaPlayerControl, VideoRendererEventListener {
     private static final String EVENT_PROP_DURATION = "duration";
 
     private static final String EVENT_PROP_CURRENT_TIME = "currentTime";
@@ -107,7 +107,7 @@ public class ExoPlayerView extends AbsVideoView implements ExoPlayer.EventListen
 
     private boolean mIsSeeked = false;
 
-    public ExoPlayerView(final ThemedReactContext context) {
+    public ReactExoPlayerView(final ThemedReactContext context) {
         super(context.getCurrentActivity());
         mContext = context;
         context.addLifecycleEventListener(this);
