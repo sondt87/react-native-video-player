@@ -10,7 +10,7 @@ import com.github.sondt87.AbsVideoView;
 
 public class ReactExoVideoViewManager extends AbsReactVideoViewManager {
 
-    public static final String REACT_CLASS = "RCTEXOVideo";
+    public static final String REACT_CLASS = "RCTKSYVideo";
 
 
     @Override

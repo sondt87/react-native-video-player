@@ -8,7 +8,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.github.sondt87.reactnative.videoplayer.ReactExoVideoPackage;
-import com.ksyun.media.reactnative.ReactKSYVideoPackage;
+// import com.ksyun.media.reactnative.ReactKSYVideoPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +25,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-              new ReactKSYVideoPackage(),
+              // new ReactKSYVideoPackage(),
               new ReactExoVideoPackage()
       );
     }

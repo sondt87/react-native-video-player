@@ -179,7 +179,7 @@ KSYVideo.propTypes = {
     ...KSYViewPropType,
 };
 
-const RCTKSYVideo = requireNativeComponent('RCTEXOVideo',KSYVideo,{
+const RCTKSYVideo = requireNativeComponent('RCTKSYVideo',KSYVideo,{
    nativeOnly: {
     src: true,
     seek: true,
