@@ -18,7 +18,7 @@
     NSMutableArray *registeredNotifications;
     float prepareTimeout;
     float readTimeout;
-    
+    NSURL *mainUrl;
     BOOL _paused;
     BOOL _playInBackground;
     BOOL _playWhenInactive;
@@ -97,6 +97,8 @@
 - (void)setSrc:(NSDictionary *)source {
     NSString *uri = [source objectForKey:@"uri"];
     NSURL* url = [NSURL URLWithString:uri];
+    
+    mainUrl = url;
     
     [_player reset:NO];
     [_player setUrl:url];
@@ -222,6 +224,9 @@
         if(self.onVideoLoad){
             int width = _player.naturalSize.width;
             int height = _player.naturalSize.height;
+            if (width < 1){
+                [_player reload:mainUrl];
+            }
             NSString* orientation = @"landscape";
             if(width > height)
                 orientation = @"landscape";
